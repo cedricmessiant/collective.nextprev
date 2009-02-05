@@ -1,4 +1,3 @@
-Introduction
-============
+see collective/nextprev/README.txt
 
 

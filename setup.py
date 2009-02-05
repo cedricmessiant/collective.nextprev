@@ -3,11 +3,15 @@ import os
 
 version = '0.1'
 
+tests_require = ['collective.testcaselayer']
+
 setup(name='collective.nextprev',
       version=version,
       description="Next/Previous navigation through collection results",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description='\n'.join(
+          open(os.path.join(*path)).read() for path in [
+              ("collective", "nextprev", "README.txt"),
+              ("docs", "HISTORY.txt")]),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Programming Language :: Python",
@@ -26,6 +30,8 @@ setup(name='collective.nextprev',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
+      tests_require=tests_require,
+      extras_require={'tests': tests_require},
       entry_points="""
       # -*- Entry points: -*-
       """,
