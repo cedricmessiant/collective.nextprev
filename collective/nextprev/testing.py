@@ -19,8 +19,6 @@ class Layer(tcl_ptc.BasePTCLayer):
         topic = self.folder['foo-topic-title']
         topic.addCriterion('Type', 'ATPortalTypeCriterion'
                            ).setValue('News Item')
-        topic.addCriterion('review_state', 'ATSimpleStringCriterion'
-                           ).setValue('published')
         topic.setSortCriterion('effective', True)
         self.portal.portal_workflow.doActionFor(topic, 'publish')
 
@@ -32,8 +30,8 @@ class Layer(tcl_ptc.BasePTCLayer):
             type_name='News Item', id='foo-news-item-title',
             title='Foo News Item Title')
         self.folder.invokeFactory(
-            type_name='News Item', id='bar-news-item-title',
-            title='Bar News Item Title')
+            type_name='Document', id='bar-page-title',
+            title='Bar Page Title')
         self.folder.invokeFactory(
             type_name='News Item', id='baz-news-item-title',
             title='Baz News Item Title')
@@ -42,6 +40,8 @@ class Layer(tcl_ptc.BasePTCLayer):
 
         self.portal.portal_workflow.doActionFor(
             self.folder['foo-news-item-title'], 'publish')
+        self.portal.portal_workflow.doActionFor(
+            self.folder['bar-page-title'], 'publish')
         self.portal.portal_workflow.doActionFor(
             self.folder['baz-news-item-title'], 'publish')
 
