@@ -1,13 +1,18 @@
+from Testing import ZopeTestCase
 from Products.PloneTestCase import ptc
+
+from plone.app.portlets import utils
 
 from collective.testcaselayer import ptc as tcl_ptc
 
 ptc.setupPloneSite()
 
 class Layer(tcl_ptc.BasePTCLayer):
-    """Install collective.formcriteria"""
+    """Install collective.nextprev"""
 
     def afterSetUp(self):
+        ZopeTestCase.installPackage('collective.nextprev')
+
         self.loginAsPortalOwner()
 
         self.portal.portal_workflow.doActionFor(
@@ -24,6 +29,7 @@ class Layer(tcl_ptc.BasePTCLayer):
 
         self.login()
 
+        self.folder.setDefaultPage('foo-topic-title')
         self.folder.setNextPreviousEnabled(True)
 
         self.folder.invokeFactory(
@@ -35,6 +41,9 @@ class Layer(tcl_ptc.BasePTCLayer):
         self.folder.invokeFactory(
             type_name='News Item', id='baz-news-item-title',
             title='Baz News Item Title')
+        self.folder.invokeFactory(
+            type_name='News Item', id='qux-baz-news-item-title',
+            title='Qux Baz News Item Title')
 
         self.loginAsPortalOwner()
 
@@ -44,6 +53,16 @@ class Layer(tcl_ptc.BasePTCLayer):
             self.folder['bar-page-title'], 'publish')
         self.portal.portal_workflow.doActionFor(
             self.folder['baz-news-item-title'], 'publish')
+        self.portal.portal_workflow.doActionFor(
+            self.folder['qux-baz-news-item-title'], 'publish')
+
+        # clear the portlets showing items
+        mapping = utils.assignment_mapping_from_key(
+            self.portal, "plone.leftcolumn", "context", "/")
+        del mapping['navigation']
+        mapping = utils.assignment_mapping_from_key(
+            self.portal, "plone.rightcolumn", "context", "/")
+        del mapping['news']
 
         self.logout()
 
