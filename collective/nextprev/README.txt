@@ -30,7 +30,9 @@ One item is a page and so doesn't show up in the collection listing.
     [<ATNewsItem at /plone/Members/test_user_1_/foo-news-item-title>,
      <ATNewsItem at /plone/Members/test_user_1_/baz-news-item-title>,
      <ATNewsItem at
-      /plone/Members/test_user_1_/qux-baz-news-item-title>] 
+      /plone/Members/test_user_1_/qux-baz-news-item-title>,
+     <ATNewsItem at
+      /plone/news/blah-news-item-title>] 
 
 Next/previous navigation is enabled for the folder but not for the topic.
 
@@ -117,3 +119,37 @@ result sets.
     >>> browser.getLink('Next')
     <Link text='Next: Qux Baz News Item Title Right arrow[IMG]'
     url='http://nohost/plone/Members/test_user_1_/qux-baz-news-item-title'>
+
+Items outside the current set can be safely viewed.
+
+    >>> browser.open(folder['foo-news-item-title'].absolute_url())
+    >>> browser.getLink('Previous')
+    Traceback (most recent call last):
+    LinkNotFoundError
+    >>> browser.getLink('Next')
+    Traceback (most recent call last):
+    LinkNotFoundError
+
+A topic which is contained in a folder but is not in the current set
+can also be safely viewed.
+
+    >>> browser.open(folder.absolute_url())
+    >>> browser.getLink('Previous')
+    Traceback (most recent call last):
+    LinkNotFoundError
+    >>> browser.getLink('Next')
+    Traceback (most recent call last):
+    LinkNotFoundError
+
+Though next/previous navigation is not available on large folders, the
+next/previous links will still be rendered when a collection lists
+items inside a large folder.
+
+    >>> browser.open(folder.absolute_url())
+    >>> browser.getLink('Blah News Item Title').click()
+    >>> browser.getLink('Previous')
+    <Link text='Left arrow[IMG] Previous: Qux Baz News Item Title'
+    url='http://nohost/plone/Members/test_user_1_/qux-baz-news-item-title'>
+    >>> browser.getLink('Next')
+    Traceback (most recent call last):
+    LinkNotFoundError

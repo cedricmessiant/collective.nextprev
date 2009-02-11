@@ -56,6 +56,13 @@ class Layer(tcl_ptc.BasePTCLayer):
         self.portal.portal_workflow.doActionFor(
             self.folder['qux-baz-news-item-title'], 'publish')
 
+        # Create a news item in the news large folder
+        self.portal.news.invokeFactory(
+            type_name='News Item', id='blah-news-item-title',
+            title='Blah News Item Title')
+        self.portal.portal_workflow.doActionFor(
+            self.portal.news['blah-news-item-title'], 'publish')
+
         # clear the portlets showing items
         mapping = utils.assignment_mapping_from_key(
             self.portal, "plone.leftcolumn", "context", "/")
