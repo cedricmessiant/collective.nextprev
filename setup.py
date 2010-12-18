@@ -28,11 +28,13 @@ setup(name='collective.nextprev',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          # -*- Extra requirements: -*-
+          'archetypes.schemaextender',
       ],
       tests_require=tests_require,
       extras_require={'tests': tests_require},
       entry_points="""
       # -*- Entry points: -*-
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )

@@ -29,5 +29,10 @@
      />
   
   <five:registerPackage package="." initialize=".initialize" />
+  
+  <adapter
+        name="collective.nextprev.topic-schema-extender"
+        factory=".topic.TopicSchemaExtender"
+        provides="archetypes.schemaextender.interfaces.ISchemaExtender" />
 
 </configure>
